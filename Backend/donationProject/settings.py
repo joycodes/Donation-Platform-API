@@ -14,8 +14,16 @@ from pathlib import Path
 import os
 from decouple import config, Csv
 
+import dj_database_url
+import django_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+MODE='dev'
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +62,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'donationProject.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -78,12 +89,22 @@ WSGI_APPLICATION = 'donationProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if MODE =="dev":
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD':config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': '', 
     }
 }
+
+# production
+else:
+   DATABASES = {}
+   DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -116,12 +137,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+cloudinary.config( 
+  cloud_name=config('CLOUD_NAME'),
+  api_key=config('API_KEY'),
+  api_secret=config('API_SECRET')   
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -136,3 +162,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'donationApp.CustomUser'
+WSGI_APPLICATION = 'donationProject.wsgi.application'
+django_heroku.settings(locals())
+
