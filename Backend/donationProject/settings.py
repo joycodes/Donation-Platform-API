@@ -14,6 +14,12 @@ from pathlib import Path
 import os
 from decouple import config, Csv
 
+import dj_database_url
+import django_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -116,12 +122,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+cloudinary.config( 
+  cloud_name=config('CLOUD_NAME'),
+  api_key=config('API_KEY'),
+  api_secret=config('API_SECRET')   
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -136,3 +147,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'donationApp.CustomUser'
+WSGI_APPLICATION = 'automatedDonation.wsgi.application'
+django_heroku.settings(locals())
+

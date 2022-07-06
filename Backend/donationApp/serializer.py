@@ -24,11 +24,9 @@ class BeneficiarySerializer(serializers.ModelSerializer):
 
 class DonorSerializer(serializers.ModelSerializer):
   donor = UsersSerializer()
-  # groups = UsersSerializer(source='donations_set',many=True)
   class Meta:
     model = Donor
     fields = '__all__'
-    # exclude = ['is_staff','is_active','is_superuser','groups','user_permissions','last_login']
 
 
   def create(self, validated_data):
