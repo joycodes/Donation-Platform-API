@@ -40,8 +40,7 @@ class DonorSerializer(serializers.ModelSerializer):
     donor_data = validated_data.pop('donor')
     donor = instance.donor
 
-    # instance.location = validated_data.get('location', instance.location)
-    # instance.save()
+   
 
     donor.user_name = donor_data.get('user_name',donor.user_name)
 
