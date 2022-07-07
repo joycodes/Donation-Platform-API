@@ -11,6 +11,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PaymentviewComponent } from './paymentview/paymentview.component';
 import { RegisterviewComponent } from './registerview/registerview.component';
 import { WorkviewComponent } from './workview/workview.component';
+import { UserRegisterService } from './service/user-register.service';
+import { DonationsapiservicesService } from './service/donationsapiservices.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,10 @@ import { WorkviewComponent } from './workview/workview.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    DonationsapiservicesService,
+    UserRegisterService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
