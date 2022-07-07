@@ -1,3 +1,3 @@
 # Donation
 
-Donation Platform
+Donation
