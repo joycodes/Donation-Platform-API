@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny
 from rest_framework import generics
 # donor serializer dependencies
-import requests
+
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 
