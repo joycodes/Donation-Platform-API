@@ -30,7 +30,7 @@ MODE='prod'
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default=1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,6 +83,7 @@ ROOT_URLCONF = 'donationProject.urls'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
+    "http://donationappke.herokuapp.com",
     "http://127.0.0.1:8000",
 ]
 
@@ -184,6 +185,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'donationApp.CustomUser'
+AUTH_USER_MODEL = 'donationApp.User'
 django_heroku.settings(locals())
 
