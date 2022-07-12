@@ -7,6 +7,18 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import *
 
+from .models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields= ('username', 'email', 'password')
+       
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 # get user token
 class GetTokenPairSerializer(TokenObtainPairSerializer):
