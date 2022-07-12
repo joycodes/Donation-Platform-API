@@ -1,8 +1,10 @@
 from re import T
 from django.db import models
-from django.contrib.auth.models import User,AbstractUser
+# from django.contrib.auth.models import User,AbstractUser,AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import User, AbstractUser, BaseUserManager,AbstractBaseUser,PermissionsMixin
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 class User(AbstractUser):

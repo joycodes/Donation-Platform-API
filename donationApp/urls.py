@@ -1,9 +1,15 @@
 from django.urls import path,re_path as url
 from . import views
 from .views import *
+from django.contrib.auth import views as auth_views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('', views.home, name='home'),
+
+    path('api/register/',views.RegisterView.as_view()),
+    path('api/login/',views.LoginView.as_view()),
+    path('api/users/',views.UserList.as_view()),
 
 
     #charities API endpoints

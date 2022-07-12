@@ -4,8 +4,9 @@ from .serializers import *
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny
 from rest_framework import generics
+
 # donor serializer dependencies
-import requests
+
 from rest_framework.decorators import api_view
 from django.http.response import JsonResponse
 
@@ -23,10 +24,87 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponseForbidden
+
+from rest_framework.exceptions import AuthenticationFailed
+import jwt,datetime
+from .models import User
 # Create your views here.
 
 def home(request):
   return render(request, 'home.html')
+
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        password = request.data['password']
+
+        user=User.objects.filter(email=email).first()
+
+        if user is None:
+            raise AuthenticationFailed('user not found')
+
+        if not user.check_password(password):
+            raise AuthenticationFailed('incorrect password')
+
+
+        payload = {
+            'id': user.id,
+            'exp': datetime.datetime.now() + datetime.timedelta(minutes=120),
+            'iat': datetime.datetime.now()
+        }
+
+        token = jwt.encode(payload, 'secret', algorithm='HS256')
+        response = Response()
+
+        response.set_cookie(key='jwt', value=token, httponly=True)
+
+        response.data ={
+            'jwt': token
+        }
+
+        return response
+
+class UserView(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('unauthenticated')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms='HS256')
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('unauthenticated')
+
+
+
+
+        user = User.objects.filter(id=payload['id']).first()
+        serializer = UserSerializer(user)
+
+
+
+ 
+        return Response(serializer.data)
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+class UserList(APIView):
+    def get(self, request, format=None):
+        all_user = User.objects.all()
+        serializers = UserSerializer(all_user, many=True)
+        return Response(serializers.data)
+    def post(self, request, format=None):
+        serializers = UserSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CharityList(APIView):
     permission_classes = (AllowAny,)
