@@ -159,7 +159,7 @@ class CharityDetails(APIView):
     def delete(self, request, pk, format=None):
         charity = self.get_object(pk)
         charity.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({"message":"deleted"})
 
 
 class DonorList(APIView):
@@ -204,7 +204,7 @@ class DonorDetails(APIView):
     def delete(self, request, pk, format=None):
         donor = self.get_object(pk)
         donor.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({"message":"deleted"})
 
     
 class FeedbackList(APIView):

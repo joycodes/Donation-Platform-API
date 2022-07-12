@@ -3,6 +3,7 @@ from . import views
 from .views import *
 from django.contrib.auth import views as auth_views
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -10,6 +11,8 @@ urlpatterns = [
     path('api/register/',views.RegisterView.as_view()),
     path('api/login/',views.LoginView.as_view()),
     path('api/users/',views.UserList.as_view()),
+    # path('api/logout/',views.LogoutView.as_view()),
+
 
 
     #charities API endpoints
@@ -33,13 +36,14 @@ urlpatterns = [
     # path('api/posts/<int:pk>/', views.PostsDetails.as_view()),
 
     #Charity Donations API endpoints
-    path('api/charity/(<charity_id>\d+)/donations/', views.CharitiesDonationsList),
-    path('api/charity/(<charity_id>\d+)/donations/(<donation_id>\d+)/', views.CharitiesDonationsdetails),   
+    # path('api/charity/(<charity_id>\d+)/donations/', views.CharitiesDonationsList),
+    # path('api/charity/(<charity_id>\d+)/donations/(<donation_id>\d+)/', views.CharitiesDonationsdetails),   
 
-    path('signin/', GetTokenPairView.as_view(), name='token_obtain_pair'),
-    path('signup/', RegisterDonorView.as_view(), name='signup'),
-    path('signup-charity/', RegisterCharityView.as_view(), name='signup-charity'),
-    path('signup-admin/', RegisterAdminView.as_view(), name='signup-admin'),
+    # path('signin/', GetTokenPairView.as_view(), name='token_obtain_pair'),
+    # path('signup/', RegisterDonorView.as_view(), name='signup'),
+    # path('signup-charity/', RegisterCharityView.as_view(), name='signup-charity'),
+    # path('signup-admin/', RegisterAdminView.as_view(), name='signup-admin'),
+    
     # donor endpoints
     path('donors/', views.donor_list),
     path('donors/(<donor_id>\d+)/', views.donor_details),
@@ -47,12 +51,12 @@ urlpatterns = [
     path('charity/beneficiaries/', views.beneficiaries_list),
     path('charity/beneficiaries/(<beneficiary_id>\d+)/', views.beneficiary_details),
     
-    path('charity/(<charity_id>\d+)/beneficiaries/', views.charitybeneficiaries_list),
-    path('charity/(<charity_id>\d+)/beneficiary/(<beneficiary_id>\d+)/', views.charitybeneficiary_details),
+    # path('charity/(<charity_id>\d+)/beneficiaries/', views.charitybeneficiaries_list),
+    # path('charity/(<charity_id>\d+)/beneficiary/(<beneficiary_id>\d+)/', views.charitybeneficiary_details),
     
     # all anonymous donations view
-    path('api/anon/', views.anonnymous_donation),
+    # path('api/anon/', views.anonnymous_donation),
     # charity's anonymous donations
-    path('api/charity/(<charity_id>\d+)/anon_donations/', views.anonnymous_donation_list),
+    # path('api/charity/(<charity_id>\d+)/anon_donations/', views.anonnymous_donation_list),
     
 ]

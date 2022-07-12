@@ -23,7 +23,7 @@ import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MODE='dev'
+MODE='prod'
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,7 +80,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'donationProject.urls'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_CREDENTIALS=True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://donationappke.herokuapp.com",
