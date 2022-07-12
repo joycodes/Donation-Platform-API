@@ -8,10 +8,10 @@ from django.utils import timezone
 # Create your models here.
 
 class User(AbstractUser):
-  is_charity = models.BooleanField(default=False)
-  is_donor = models.BooleanField(default=False)
-  is_superuser = models.BooleanField(default=False)
-  is_staff = models.BooleanField(default=False)
+  is_charity = models.BooleanField(default=False, blank=True, null=True)
+  is_donor = models.BooleanField(default=False, blank=True, null=True)
+  is_superuser = models.BooleanField(default=False, blank=True, null=True)
+  is_staff = models.BooleanField(default=False, blank=True, null=True)
 
 
 # Create your models here.
@@ -288,7 +288,7 @@ DONATION_FREQUENCY= [
 
 
 class Donor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
@@ -310,7 +310,7 @@ class Donor(models.Model):
 
 
 class Charity(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=60)
     email = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
