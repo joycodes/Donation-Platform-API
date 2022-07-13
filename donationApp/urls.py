@@ -4,6 +4,8 @@ from .views import *
 from django.contrib.auth import views as auth_views
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -58,5 +60,11 @@ urlpatterns = [
     # path('api/anon/', views.anonnymous_donation),
     # charity's anonymous donations
     # path('api/charity/(<charity_id>\d+)/anon_donations/', views.anonnymous_donation_list),
+
+    path('api-token-auth/',obtain_auth_token),
+    
     
 ]
+
+if settings.DEBUG:
+    urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

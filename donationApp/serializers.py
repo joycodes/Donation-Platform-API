@@ -7,14 +7,14 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import *
 
-from .models import User
+# from .models import User
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields= ('username', 'email', 'password')
+        fields= ('username', 'email', 'password', 'first_name', 'last_name')
        
         extra_kwargs = {
             'password': {'write_only': True}
@@ -159,7 +159,7 @@ class BeneficiariesSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'contact', 'location','country','donation_received')
         
         
-class AnonymousDonationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AnonymousDonation
-        fields = '__all__'
+# class AnonymousDonationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = AnonymousDonation
+#         fields = '__all__'
