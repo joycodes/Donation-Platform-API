@@ -429,96 +429,96 @@ def donor_details(request, donor_id):
             return JsonResponse(donor_serializer.data) 
         return JsonResponse(donor_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#beneficiaries list 
-@api_view(['GET','DELETE','POST'])
-@permission_classes((AllowAny,))
-def beneficiaries_list(request):
-    if request.method == 'GET':
-        beneficiaries = Beneficiary.objects.all()
-        beneficiaries_serializer = BeneficiariesSerializer(beneficiaries, many=True,context={'request': request})
-        return Response(beneficiaries_serializer.data)
-    elif request.method == 'POST':
-        # beneficiaries_data = JSONParser().parse(request)
-        beneficiaries_serializer = BeneficiariesSerializer(data=request.data)
-        if beneficiaries_serializer.is_valid():
-            beneficiaries_serializer.save()
-            return Response(beneficiaries_serializer.data, status=status.HTTP_201_CREATED) 
-        return Response(beneficiaries_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        count = Beneficiary.objects.all().delete()
-        return JsonResponse({'message': '{} All Beneficiaries successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+# #beneficiaries list 
+# @api_view(['GET','DELETE','POST'])
+# @permission_classes((AllowAny,))
+# def beneficiaries_list(request):
+#     if request.method == 'GET':
+#         beneficiaries = Beneficiary.objects.all()
+#         beneficiaries_serializer = BeneficiariesSerializer(beneficiaries, many=True,context={'request': request})
+#         return Response(beneficiaries_serializer.data)
+#     elif request.method == 'POST':
+#         # beneficiaries_data = JSONParser().parse(request)
+#         beneficiaries_serializer = BeneficiariesSerializer(data=request.data)
+#         if beneficiaries_serializer.is_valid():
+#             beneficiaries_serializer.save()
+#             return Response(beneficiaries_serializer.data, status=status.HTTP_201_CREATED) 
+#         return Response(beneficiaries_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'DELETE':
+#         count = Beneficiary.objects.all().delete()
+#         return JsonResponse({'message': '{} All Beneficiaries successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
     
-# single beneficiary view   
-@api_view(['GET', 'PUT','DELETE','POST'])
-@permission_classes((IsAuthenticated,))
-def beneficiary_details(request, beneficiary_id):
-    try: 
-        beneficiary = Beneficiary.objects.get(id=beneficiary_id) 
-    except Beneficiary.DoesNotExist: 
-        return JsonResponse({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
+# # single beneficiary view   
+# @api_view(['GET', 'PUT','DELETE','POST'])
+# @permission_classes((IsAuthenticated,))
+# def beneficiary_details(request, beneficiary_id):
+#     try: 
+#         beneficiary = Beneficiary.objects.get(id=beneficiary_id) 
+#     except Beneficiary.DoesNotExist: 
+#         return JsonResponse({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
  
-    if request.method == 'GET': 
-        beneficiary_serializer = BeneficiariesSerializer(beneficiary,many=True) 
-        return Response(beneficiary_serializer.data) 
-    elif request.method == 'PUT': 
-        beneficiary_data = JSONParser().parse(request) 
-        beneficiary_serializer = BeneficiariesSerializer(beneficiary, data=beneficiary_data) 
-        if beneficiary_serializer.is_valid(): 
-            beneficiary_serializer.save() 
-            return JsonResponse(beneficiary_serializer.data) 
-        return JsonResponse(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE': 
-        beneficiary.delete() 
-        # return redirect('http://127.0.0.1:8000/beneficiaries/')
-        return JsonResponse({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
-    
-
-# each charity beneficiary list  
-@api_view(['GET', 'PUT','DELETE','POST'])
-@permission_classes((AllowAny,))
-def charitybeneficiaries_list(request, charity_id):
-    try:
-        charities = Charity.objects.get(id=charity_id)
-        beneficiary = Beneficiary.objects.filter(charity=charities)
-    except Beneficiary.DoesNotExist: 
-        return JsonResponse({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
- 
-    if request.method == 'GET': 
-        beneficiary_serializer = BeneficiariesSerializer(beneficiary, many=True) 
-        return Response(beneficiary_serializer.data) 
-    elif request.method == 'POST':
-        beneficiary_serializer = BeneficiariesSerializer(data=request.POST)
-        if beneficiary_serializer.is_valid():
-            beneficiary_serializer.save(charity_id=charity_id)
-            return Response(beneficiary_serializer.data, status=status.HTTP_201_CREATED) 
-        return Response(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE': 
-        beneficiary.delete() 
-        return JsonResponse({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+#     if request.method == 'GET': 
+#         beneficiary_serializer = BeneficiariesSerializer(beneficiary,many=True) 
+#         return Response(beneficiary_serializer.data) 
+#     elif request.method == 'PUT': 
+#         beneficiary_data = JSONParser().parse(request) 
+#         beneficiary_serializer = BeneficiariesSerializer(beneficiary, data=beneficiary_data) 
+#         if beneficiary_serializer.is_valid(): 
+#             beneficiary_serializer.save() 
+#             return JsonResponse(beneficiary_serializer.data) 
+#         return JsonResponse(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'DELETE': 
+#         beneficiary.delete() 
+#         # return redirect('http://127.0.0.1:8000/beneficiaries/')
+#         return JsonResponse({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
 
-# single charity beneficiary view   
-@api_view(['GET', 'PUT','DELETE','POST'])
-@permission_classes((AllowAny,))
-def charitybeneficiary_details(request, charity_id, beneficiary_id):
-    try: 
-        beneficiary = Beneficiary.objects.get(id=beneficiary_id)
-        charities = Charity.objects.get(id=charity_id) 
-    except Beneficiary.DoesNotExist: 
-        return Response({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
+# # each charity beneficiary list  
+# @api_view(['GET', 'PUT','DELETE','POST'])
+# @permission_classes((AllowAny,))
+# def charitybeneficiaries_list(request, charity_id):
+#     try:
+#         charities = Charity.objects.get(id=charity_id)
+#         beneficiary = Beneficiary.objects.filter(charity=charities)
+#     except Beneficiary.DoesNotExist: 
+#         return JsonResponse({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
  
-    if request.method == 'GET': 
-        beneficiary_serializer = BeneficiariesSerializer(beneficiary) 
-        return Response(beneficiary_serializer.data) 
-    elif request.method == 'PUT': 
-        beneficiary_serializer = BeneficiariesSerializer(beneficiary, data=request.data) 
-        if beneficiary_serializer.is_valid(): 
-            beneficiary_serializer.save() 
-            return JsonResponse(beneficiary_serializer.data, status=status.HTTP_200_OK) 
-        return JsonResponse(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE': 
-        beneficiary.delete() 
-        return Response({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+#     if request.method == 'GET': 
+#         beneficiary_serializer = BeneficiariesSerializer(beneficiary, many=True) 
+#         return Response(beneficiary_serializer.data) 
+#     elif request.method == 'POST':
+#         beneficiary_serializer = BeneficiariesSerializer(data=request.POST)
+#         if beneficiary_serializer.is_valid():
+#             beneficiary_serializer.save(charity_id=charity_id)
+#             return Response(beneficiary_serializer.data, status=status.HTTP_201_CREATED) 
+#         return Response(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'DELETE': 
+#         beneficiary.delete() 
+#         return JsonResponse({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    
+
+# # single charity beneficiary view   
+# @api_view(['GET', 'PUT','DELETE','POST'])
+# @permission_classes((AllowAny,))
+# def charitybeneficiary_details(request, charity_id, beneficiary_id):
+#     try: 
+#         beneficiary = Beneficiary.objects.get(id=beneficiary_id)
+#         charities = Charity.objects.get(id=charity_id) 
+#     except Beneficiary.DoesNotExist: 
+#         return Response({'message': 'Not found'}, status=status.HTTP_404_NOT_FOUND) 
+ 
+#     if request.method == 'GET': 
+#         beneficiary_serializer = BeneficiariesSerializer(beneficiary) 
+#         return Response(beneficiary_serializer.data) 
+#     elif request.method == 'PUT': 
+#         beneficiary_serializer = BeneficiariesSerializer(beneficiary, data=request.data) 
+#         if beneficiary_serializer.is_valid(): 
+#             beneficiary_serializer.save() 
+#             return JsonResponse(beneficiary_serializer.data, status=status.HTTP_200_OK) 
+#         return JsonResponse(beneficiary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'DELETE': 
+#         beneficiary.delete() 
+#         return Response({'message': 'Beneficiary deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
 
 # each charity's donations view

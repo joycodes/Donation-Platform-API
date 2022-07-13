@@ -50,8 +50,8 @@ urlpatterns = [
     path('donors/', views.donor_list),
     path('donors/(<donor_id>\d+)/', views.donor_details),
     # beneficiaries endpoints
-    path('charity/beneficiaries/', views.beneficiaries_list),
-    path('charity/beneficiaries/(<beneficiary_id>\d+)/', views.beneficiary_details),
+    # path('charity/beneficiaries/', views.beneficiaries_list),
+    # path('charity/beneficiaries/(<beneficiary_id>\d+)/', views.beneficiary_details),
     
     # path('charity/(<charity_id>\d+)/beneficiaries/', views.charitybeneficiaries_list),
     # path('charity/(<charity_id>\d+)/beneficiary/(<beneficiary_id>\d+)/', views.charitybeneficiary_details),

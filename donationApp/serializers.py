@@ -152,11 +152,11 @@ class DonorSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
         
-class BeneficiariesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Beneficiary
-        # fields = '__all__'
-        fields = ('id', 'name', 'contact', 'location','country','donation_received')
+# class BeneficiariesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Beneficiary
+#         # fields = '__all__'
+#         fields = ('id', 'name', 'contact', 'location','country','donation_received')
         
         
 # class AnonymousDonationSerializer(serializers.ModelSerializer):
