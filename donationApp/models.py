@@ -5,6 +5,8 @@ from django.contrib.auth.models import User, AbstractUser, BaseUserManager,Abstr
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
+
 # Create your models here.
 
 class User(AbstractUser):
@@ -12,6 +14,7 @@ class User(AbstractUser):
   is_donor = models.BooleanField(default=False, blank=True, null=True)
   is_superuser = models.BooleanField(default=False, blank=True, null=True)
   is_staff = models.BooleanField(default=False, blank=True, null=True)
+  authtoken_token = "ForeignKey"
 
 
 # Create your models here.
@@ -286,6 +289,9 @@ DONATION_FREQUENCY= [
     ('Annualy', ('Annualy')),
 ]
 
+class Tokens(models.Model):
+    class Meta: 
+        abstract = 'rest_framework.authtoken' not in settings.INSTALLED_APPS
 
 class Donor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -294,7 +300,7 @@ class Donor(models.Model):
     email = models.CharField(max_length=50)
     phone_number = models.IntegerField(null=True)
     location = models.CharField(max_length=30)
-    country = models.CharField(choices=COUNTRIES, max_length=50)
+    # country = models.CharField(choices=COUNTRIES, max_length=50)
     bio = models.TextField(max_length=700)
     image = CloudinaryField('image', null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -314,7 +320,7 @@ class Charity(models.Model):
     name = models.CharField(max_length=60)
     email = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
-    country = models.CharField(choices=COUNTRIES, max_length=50)
+    # country = models.CharField(choices=COUNTRIES, max_length=50)
     description = models.TextField(max_length=700)
     charity_image = CloudinaryField('charity_image', null=True)
     date_formed = models.DateTimeField(auto_now_add=True)
@@ -381,7 +387,7 @@ class Beneficiary(models.Model):
     charity = models.ForeignKey(Charity, on_delete=models.CASCADE)
     contact= models.CharField(max_length=50)
     location = models.CharField(max_length=50)
-    country = models.CharField(choices=COUNTRIES, max_length=50)
+    # country = models.CharField(choices=COUNTRIES, max_length=50)
     donation_received = models.CharField(max_length=100)
     
     def __str__(self):
